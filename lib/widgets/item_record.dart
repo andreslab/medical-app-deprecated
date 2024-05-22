@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:heart/models/models.dart';
 import 'package:heart/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 import 'package:heart/providers/ui_provider.dart';
 
 class ItemRecord extends StatelessWidget {
+  final Record record;
+
+  const ItemRecord({super.key, required this.record});
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -25,18 +30,18 @@ class ItemRecord extends StatelessWidget {
               Text('SYS',
                   style: TextStyle(
                       fontSize: AppTheme.body, color: AppTheme.light)),
-              Text('120',
+              Text("${record.systolic}",
                   style:
                       TextStyle(fontSize: AppTheme.h3, color: AppTheme.bold)),
               Spacer(),
               Text('DIA',
                   style: TextStyle(
                       fontSize: AppTheme.body, color: AppTheme.light)),
-              Text('80',
+              Text("${record.diastolic}",
                   style:
                       TextStyle(fontSize: AppTheme.h3, color: AppTheme.bold)),
               Spacer(),
-              Text('70',
+              Text("${record.bpm}",
                   style: TextStyle(
                       fontSize: AppTheme.title, color: AppTheme.bold)),
               Icon(

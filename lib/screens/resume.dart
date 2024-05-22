@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:heart/models/models.dart';
+import 'package:heart/providers/providers.dart';
 import 'package:heart/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class ResumeScreen extends StatelessWidget {
   const ResumeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final recordsProvider = Provider.of<RecordsProvider>(context);
+    final records = recordsProvider.records;
     final size = MediaQuery.of(context).size;
     final heightChart = size.height * 0.4;
 
@@ -23,8 +27,11 @@ class ResumeScreen extends StatelessWidget {
               primary: false,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (_, int index) => ItemRecord(),
-              itemCount: 7,
+              itemBuilder: (_, int index) {
+                Record record = records[index];
+                return ItemRecord(record: record);
+              },
+              itemCount: records.length,
             ),
           )
         ],
