@@ -3,8 +3,20 @@ import 'package:heart/screens/screens.dart';
 import 'package:heart/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:heart/providers/providers.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
+  const supabaseKey = String.fromEnvironment('SUPABASE_KEY');
+
+  await Supabase.initialize(
+    url: supabaseUrl,
+    anonKey: supabaseKey,
+  );
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
