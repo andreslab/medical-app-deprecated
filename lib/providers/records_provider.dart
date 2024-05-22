@@ -26,6 +26,7 @@ class RecordsProvider extends ChangeNotifier {
     } catch (e) {
       _errorMessage = e.toString();
       _isLoading = false;
+      print("Error: $_errorMessage");
       notifyListeners();
     }
   }
