@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:heart/api/api.dart';
 import 'package:heart/models/models.dart';
+import 'package:heart/providers/providers.dart';
+import 'package:heart/storage/storage.dart';
+import 'package:sqflite/sqflite.dart';
 
 class AlarmsProvider extends ChangeNotifier {
   final AlarmsApi _alarmsApi = AlarmsApi();
+  late final Storage _storage = Storage();
+  final tableName = 'alarms';
+  final AuthProvider? _authProvider;
   List<Alarm> _alarms = [];
   String _errorMessage = '';
   bool _isLoading = true;
@@ -12,11 +18,15 @@ class AlarmsProvider extends ChangeNotifier {
   String get errorMessage => _errorMessage;
   bool get isLoading => _isLoading;
 
-  AlarmsProvider() {
-    getRecords();
+  AlarmsProvider([this._authProvider]) {
+    if (_authProvider != null && _authProvider!.loggedIn) {
+      getAlarms();
+    } else {
+      getAlarmsFromDB();
+    }
   }
 
-  getRecords() async {
+  getAlarms() async {
     try {
       _isLoading = true;
       notifyListeners();
@@ -27,6 +37,43 @@ class AlarmsProvider extends ChangeNotifier {
       _errorMessage = e.toString();
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  getAlarmsFromDB() async {
+    final List<Map<String, dynamic>> alarmsFromDB =
+        await _storage.db.query('alarms');
+    _alarms =
+        List<Alarm>.from(alarmsFromDB.map((model) => Alarm.fromJson(model)));
+    notifyListeners();
+  }
+
+  createAlarm(Alarm alarm) async {
+    if (_authProvider!.loggedIn) {
+      //TODO: send to endpoint
+    } else {
+      await _storage.db.insert(
+        'alarms',
+        alarm.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    }
+  }
+
+  updateAlarm(Alarm alarm) async {
+    if (_authProvider!.loggedIn) {
+      //TODO: send to endpoint
+    } else {
+      await _storage.db.update(tableName, alarm.toMap(),
+          where: 'id = ?', whereArgs: [alarm.id]);
+    }
+  }
+
+  deleteRecord(int id) async {
+    if (_authProvider!.loggedIn) {
+      //TODO: send to endpoint
+    } else {
+      await _storage.db.delete(tableName, where: 'id = ?', whereArgs: [id]);
     }
   }
 }
