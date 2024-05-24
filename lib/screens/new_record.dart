@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:heart/providers/providers.dart';
 import 'package:heart/theme/app_theme.dart';
+import 'package:provider/provider.dart';
 
 class NewRecordScreen extends StatelessWidget {
   const NewRecordScreen({super.key});
@@ -8,6 +10,7 @@ class NewRecordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final heightMainBox = size.height * 0.4;
+    final recordsProvider = Provider.of<RecordsProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -102,7 +105,7 @@ class NewRecordScreen extends StatelessWidget {
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Colors.black26)),
-                    onPressed: null,
+                    onPressed: () => recordsProvider.createRecordSample(),
                     child: Text(
                       'Guardar',
                       style: TextStyle(color: Colors.white),
