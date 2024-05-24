@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:heart/providers/auth_provider.dart';
 import 'package:heart/screens/screens.dart';
 import 'package:heart/theme/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -23,12 +24,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => UiProvider()),
-        ChangeNotifierProvider(
+        ChangeNotifierProxyProvider<AuthProvider, RecordsProvider>(
+          update: (_, authProvider, previous) => RecordsProvider(authProvider),
           create: (_) => RecordsProvider(),
           lazy: false,
         ),
-        ChangeNotifierProvider(create: (_) => AlarmsProvider()),
+        ChangeNotifierProxyProvider<AuthProvider, AlarmsProvider>(
+          update: (_, authProvider, previous) => AlarmsProvider(authProvider),
+          create: (_) => AlarmsProvider(),
+        ),
         ChangeNotifierProvider(create: (_) => NewsProvider()),
       ],
       child: MaterialApp(
