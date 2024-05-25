@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:heart/api/api.dart';
+import 'package:heart/api/device_api.dart';
 import 'package:heart/models/models.dart';
 import 'package:heart/providers/providers.dart';
 import 'package:heart/storage/storage.dart';
@@ -7,6 +8,7 @@ import 'package:sqflite/sqflite.dart';
 
 class RecordsProvider extends ChangeNotifier {
   final RecordsApi _recordsApi = RecordsApi();
+  final DeviceApi _deviceApi = DeviceApi();
   late final Storage _storage = Storage();
   final tableName = 'records';
   final AuthProvider? _authProvider;
@@ -22,6 +24,7 @@ class RecordsProvider extends ChangeNotifier {
     if (_authProvider != null && _authProvider!.loggedIn) {
       getRecords();
     } else {
+      _deviceApi.registerDeviceId();
       getRecordsFromDB();
     }
   }
