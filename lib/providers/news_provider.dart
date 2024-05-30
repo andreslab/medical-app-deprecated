@@ -13,10 +13,10 @@ class NewsProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
 
   NewsProvider() {
-    getRecords();
+    getNews();
   }
 
-  getRecords() async {
+  getNews() async {
     try {
       _isLoading = true;
       notifyListeners();

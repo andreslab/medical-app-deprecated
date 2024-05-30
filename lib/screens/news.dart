@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:heart/models/models.dart';
+import 'package:heart/providers/providers.dart';
 import 'package:heart/theme/app_theme.dart';
+import 'package:provider/provider.dart';
 
 class NewsScreen extends StatelessWidget {
   const NewsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final newsProvider = Provider.of<NewsProvider>(context);
+    final news = newsProvider.news;
     final size = MediaQuery.of(context).size;
     final heightFilter = size.height * 0.07;
 
@@ -26,8 +31,13 @@ class NewsScreen extends StatelessWidget {
               primary: false,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (_, int index) => _ItemNews(),
-              itemCount: 100,
+              itemBuilder: (_, int index) {
+                News n = news[index];
+                return ItemNews(
+                  news: n,
+                );
+              },
+              itemCount: news.length,
             ),
           )
         ],
@@ -53,7 +63,11 @@ class _FilterItem extends StatelessWidget {
   }
 }
 
-class _ItemNews extends StatelessWidget {
+class ItemNews extends StatelessWidget {
+  final News news;
+
+  const ItemNews({super.key, required this.news});
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -71,14 +85,14 @@ class _ItemNews extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Titulo',
+              news.title,
               style: TextStyle(fontSize: AppTheme.title, color: AppTheme.bold),
             ),
             SizedBox(
               height: 10,
             ),
             Text(
-              'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.',
+              news.subtitle,
               style: TextStyle(fontSize: AppTheme.body, color: AppTheme.normal),
             )
           ],
