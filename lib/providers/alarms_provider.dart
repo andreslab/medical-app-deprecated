@@ -42,7 +42,7 @@ class AlarmsProvider extends ChangeNotifier {
 
   getAlarmsFromDB() async {
     final List<Map<String, dynamic>> alarmsFromDB =
-        await _storage.db.query('alarms');
+        await _storage.db.query(tableName);
     _alarms =
         List<Alarm>.from(alarmsFromDB.map((model) => Alarm.fromJson(model)));
     notifyListeners();
@@ -53,7 +53,7 @@ class AlarmsProvider extends ChangeNotifier {
       //TODO: send to endpoint
     } else {
       await _storage.db.insert(
-        'alarms',
+        tableName,
         alarm.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );

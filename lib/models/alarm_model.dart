@@ -3,14 +3,14 @@ class Alarm {
   final String title;
   final String time;
   final String body;
-  final String createAt;
+  final DateTime createdAt;
 
   Alarm(
       {required this.id,
       required this.title,
       required this.time,
       required this.body,
-      required this.createAt});
+      required this.createdAt});
 
   factory Alarm.fromJson(Map<String, dynamic> json) {
     return Alarm(
@@ -18,7 +18,7 @@ class Alarm {
         title: json['title'],
         time: json['time'],
         body: json['body'],
-        createAt: json['createAt']);
+        createdAt: DateTime.parse(json['created_at'] as String));
   }
 
   Map<String, dynamic> toMap() {
@@ -27,7 +27,7 @@ class Alarm {
       'title': title,
       'time': time,
       'body': body,
-      'createAt': createAt,
+      'created_at': createdAt.toIso8601String(),
     };
   }
 }

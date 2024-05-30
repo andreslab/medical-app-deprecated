@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:heart/models/models.dart';
+import 'package:heart/providers/providers.dart';
 import 'package:heart/theme/app_theme.dart';
+import 'package:provider/provider.dart';
 
 class AlertsScreen extends StatelessWidget {
   const AlertsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final alarmsProvider = Provider.of<AlarmsProvider>(context);
+    final alarms = alarmsProvider.alarms;
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -27,8 +33,13 @@ class AlertsScreen extends StatelessWidget {
               primary: false,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (_, int index) => _ItemAlarm(),
-              itemCount: 5,
+              itemBuilder: (_, int index) {
+                Alarm alarm = alarms[index];
+                return _ItemAlarm(
+                  alarm: alarm,
+                );
+              },
+              itemCount: alarms.length,
             ),
           )
         ],
@@ -38,6 +49,10 @@ class AlertsScreen extends StatelessWidget {
 }
 
 class _ItemAlarm extends StatelessWidget {
+  final Alarm alarm;
+
+  const _ItemAlarm({super.key, required this.alarm});
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -54,14 +69,14 @@ class _ItemAlarm extends StatelessWidget {
         child: Center(
           child: Row(
             children: [
-              Text('10:00 AM', style: TextStyle(fontSize: 20)),
+              Text(alarm.time, style: TextStyle(fontSize: 20)),
               Spacer(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Presión alterial', style: TextStyle(fontSize: 20)),
-                  Text('L,M,M,J,V,S,D', style: TextStyle(fontSize: 10)),
+                  Text(alarm.title, style: TextStyle(fontSize: 20)),
+                  Text(alarm.body, style: TextStyle(fontSize: 10)),
                 ],
               ),
             ],
