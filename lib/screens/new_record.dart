@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:heart/models/models.dart';
 import 'package:heart/providers/providers.dart';
 import 'package:heart/theme/app_theme.dart';
+import 'package:heart/widgets/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class NewRecordScreen extends StatelessWidget {
   const NewRecordScreen({super.key});
@@ -11,6 +14,9 @@ class NewRecordScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final heightMainBox = size.height * 0.4;
     final recordsProvider = Provider.of<RecordsProvider>(context);
+    String todayDateString = DateFormat.yMMMMd().format(DateTime.now());
+    String hourString = DateFormat.Hm().format(DateTime.now());
+    Record newRecord = Record();
 
     return Scaffold(
       appBar: AppBar(
@@ -18,10 +24,10 @@ class NewRecordScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Row(children: [
-          Text('13:00', style: TextStyle(color: Colors.black54)),
+          Text(hourString, style: TextStyle(color: Colors.black54)),
           Expanded(
               child: Text(
-            '30 Marco 2021',
+            todayDateString,
             textAlign: TextAlign.end,
             style: TextStyle(color: Colors.black54),
           ))
@@ -42,48 +48,44 @@ class NewRecordScreen extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      'SYS',
+                      'SYS:',
                       style: TextStyle(
-                          color: AppTheme.light, fontSize: AppTheme.h3),
+                          color: AppTheme.light, fontSize: AppTheme.h2),
                     ),
                     Spacer(),
-                    Text(
-                      '130',
-                      style: TextStyle(
-                          color: AppTheme.normal, fontSize: AppTheme.h1),
-                    )
+                    TextFieldWidget(
+                      onChanged: (value) {
+                        newRecord.systolic = int.parse(value);
+                      },
+                    ),
                   ],
                 ),
                 Spacer(),
                 Row(
                   children: [
                     Text(
-                      'DIA',
+                      'DIA:',
                       style: TextStyle(
-                          color: AppTheme.light, fontSize: AppTheme.h3),
+                          color: AppTheme.light, fontSize: AppTheme.h2),
                     ),
                     Spacer(),
-                    Text(
-                      '80',
-                      style: TextStyle(
-                          color: AppTheme.normal, fontSize: AppTheme.h1),
-                    )
+                    TextFieldWidget(onChanged: (value) {
+                      newRecord.diastolic = int.parse(value);
+                    }),
                   ],
                 ),
                 Spacer(),
                 Row(
                   children: [
                     Text(
-                      'PUL',
+                      'PUL:',
                       style: TextStyle(
-                          color: AppTheme.light, fontSize: AppTheme.h3),
+                          color: AppTheme.light, fontSize: AppTheme.h2),
                     ),
                     Spacer(),
-                    Text(
-                      '70',
-                      style: TextStyle(
-                          color: AppTheme.normal, fontSize: AppTheme.h1),
-                    )
+                    TextFieldWidget(onChanged: (value) {
+                      newRecord.bpm = int.parse(value);
+                    })
                   ],
                 )
               ],
@@ -105,7 +107,7 @@ class NewRecordScreen extends StatelessWidget {
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Colors.black26)),
-                    onPressed: () => recordsProvider.createRecordSample(),
+                    onPressed: () => {recordsProvider.createRecord(newRecord)},
                     child: Text(
                       'Guardar',
                       style: TextStyle(color: Colors.white),
