@@ -9,7 +9,6 @@ import 'package:sqflite/sqflite.dart';
 class RecordsProvider extends ChangeNotifier {
   final RecordsApi _recordsApi = RecordsApi();
   final DeviceApi _deviceApi = DeviceApi();
-  late final Storage _storage = Storage();
   final tableName = 'records';
   final AuthProvider? _authProvider;
   List<Record> _records = [];
@@ -44,16 +43,15 @@ class RecordsProvider extends ChangeNotifier {
   }
 
   getRecordsFromDB() async {
-    await _storage.initDatabase();
     final List<Map<String, dynamic>> recordsFromDB =
-        await _storage.db.query(tableName);
+        await Storage.db.query(tableName);
     _records =
         List<Record>.from(recordsFromDB.map((model) => Record.fromJson(model)));
     notifyListeners();
   }
 
   createRecordSample() async {
-    await _storage.someDatabaseOperation();
+    await Storage.someDatabaseOperation();
     await getRecordsFromDB();
     notifyListeners();
   }
@@ -62,7 +60,7 @@ class RecordsProvider extends ChangeNotifier {
     if (_authProvider!.loggedIn) {
       //TODO: send to endpoint
     } else {
-      await _storage.db.insert(
+      await Storage.db.insert(
         tableName,
         record.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
@@ -75,7 +73,7 @@ class RecordsProvider extends ChangeNotifier {
     if (_authProvider!.loggedIn) {
       //TODO: send to endpoint
     } else {
-      await _storage.db.update(tableName, record.toMap(),
+      await Storage.db.update(tableName, record.toMap(),
           where: 'id = ?', whereArgs: [record.id]);
     }
   }
@@ -84,7 +82,7 @@ class RecordsProvider extends ChangeNotifier {
     if (_authProvider!.loggedIn) {
       //TODO: send to endpoint
     } else {
-      await _storage.db.delete(tableName, where: 'id = ?', whereArgs: [id]);
+      await Storage.db.delete(tableName, where: 'id = ?', whereArgs: [id]);
     }
   }
 }

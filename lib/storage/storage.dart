@@ -1,19 +1,18 @@
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 class Storage {
-  late Database db;
+  static late Database db;
 
-  Storage() {
-    initDatabase();
-  }
+  Storage._();
 
-  Future initDatabase() async {
+  static Future<Database> initDatabase() async {
     String databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'medical.db');
 
-    db = await openDatabase(
+    return await openDatabase(
       path,
       onCreate: (db, version) async {
         await db.execute('''CREATE TABLE alarms (
@@ -39,12 +38,11 @@ class Storage {
     );
   }
 
-  // Function to close the database
   Future<void> close() async {
     await db.close();
   }
 
-  Future<void> someDatabaseOperation() async {
+  static Future<void> someDatabaseOperation() async {
     await db.insert('records', {
       'created_at': DateTime.now().toString(),
       'diastolic': 80,

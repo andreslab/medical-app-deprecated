@@ -7,7 +7,6 @@ import 'package:sqflite/sqflite.dart';
 
 class AlarmsProvider extends ChangeNotifier {
   final AlarmsApi _alarmsApi = AlarmsApi();
-  late final Storage _storage = Storage();
   final tableName = 'alarms';
   final AuthProvider? _authProvider;
   List<Alarm> _alarms = [];
@@ -22,7 +21,9 @@ class AlarmsProvider extends ChangeNotifier {
     if (_authProvider != null && _authProvider!.loggedIn) {
       getAlarms();
     } else {
-      getAlarmsFromDB();
+      if (Storage.db != null) {
+        getAlarmsFromDB();
+      }
     }
   }
 
@@ -42,7 +43,7 @@ class AlarmsProvider extends ChangeNotifier {
 
   getAlarmsFromDB() async {
     final List<Map<String, dynamic>> alarmsFromDB =
-        await _storage.db.query(tableName);
+        await Storage.db.query(tableName);
     _alarms =
         List<Alarm>.from(alarmsFromDB.map((model) => Alarm.fromJson(model)));
     notifyListeners();
@@ -52,7 +53,7 @@ class AlarmsProvider extends ChangeNotifier {
     if (_authProvider!.loggedIn) {
       //TODO: send to endpoint
     } else {
-      await _storage.db.insert(
+      await Storage.db.insert(
         tableName,
         alarm.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
@@ -64,7 +65,7 @@ class AlarmsProvider extends ChangeNotifier {
     if (_authProvider!.loggedIn) {
       //TODO: send to endpoint
     } else {
-      await _storage.db.update(tableName, alarm.toMap(),
+      await Storage.db.update(tableName, alarm.toMap(),
           where: 'id = ?', whereArgs: [alarm.id]);
     }
   }
@@ -73,7 +74,7 @@ class AlarmsProvider extends ChangeNotifier {
     if (_authProvider!.loggedIn) {
       //TODO: send to endpoint
     } else {
-      await _storage.db.delete(tableName, where: 'id = ?', whereArgs: [id]);
+      await Storage.db.delete(tableName, where: 'id = ?', whereArgs: [id]);
     }
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:heart/providers/auth_provider.dart';
 import 'package:heart/screens/screens.dart';
 import 'package:heart/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:heart/providers/providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'storage/storage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +16,9 @@ Future<void> main() async {
     url: supabaseUrl,
     anonKey: supabaseKey,
   );
+
+  Storage.db = await Storage.initDatabase();
+
   runApp(MyApp());
 }
 
