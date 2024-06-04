@@ -24,17 +24,24 @@ class AppTheme {
   static const double body = 14;
 
   static final ThemeData themeData = ThemeData(
-      scaffoldBackgroundColor: Colors.white,
-      appBarTheme: const AppBarTheme(
-          color: Colors.white, foregroundColor: light, elevation: 0),
-      primaryColor: normal,
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          backgroundColor: AppTheme.backgroundNavigation,
-          selectedIconTheme: IconThemeData(color: primary),
-          unselectedIconTheme: IconThemeData(color: unselectedIcon),
-          type: BottomNavigationBarType.fixed),
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: btnMain, elevation: 0));
+    scaffoldBackgroundColor: Colors.white,
+    appBarTheme: const AppBarTheme(
+        color: Colors.white, foregroundColor: light, elevation: 0),
+    primaryColor: normal,
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        backgroundColor: AppTheme.backgroundNavigation,
+        selectedIconTheme: IconThemeData(color: primary),
+        unselectedIconTheme: IconThemeData(color: unselectedIcon),
+        type: BottomNavigationBarType.fixed),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: btnMain, elevation: 0),
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.blue),
+      ),
+    ),
+  );
 }
