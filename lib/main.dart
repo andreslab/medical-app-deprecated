@@ -40,10 +40,12 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'digital menu',
-        initialRoute: 'home',
+        initialRoute: 'home', //home
         routes: {
           'home': (_) => HomeScreen(),
-          'new-record': (_) => NewRecordScreen()
+          'new-record': (_) => NewRecordScreen(),
+          'login': (_) => LoginScreen(),
+          'register': (_) => RegisterScreen()
         },
         theme: AppTheme.themeData,
       ),
