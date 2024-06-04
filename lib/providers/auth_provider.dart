@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:heart/api/api.dart';
 
 class AuthProvider extends ChangeNotifier {
+  final AuthApi _authApi = AuthApi();
   String _errorMessage = '';
   bool _isLoading = true;
   bool _loggedIn = false;
@@ -11,6 +13,17 @@ class AuthProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get isDeviceRegisted => _isDeviceRegisted;
 
-  login() async {}
-  register() async {}
+  AuthProvider() {}
+
+  login() async {
+    try {
+      await _authApi.login();
+    } catch (e) {}
+  }
+
+  register() async {
+    try {
+      await _authApi.register();
+    } catch (e) {}
+  }
 }

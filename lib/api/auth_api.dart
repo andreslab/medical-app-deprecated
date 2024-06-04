@@ -1,11 +1,16 @@
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:heart/models/models.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthApi {
   final String _baseUrl = 'localhost.com';
 
   AuthApi();
+
+  Future<void> login() async {}
+
+  Future<void> register() async {}
 
   // Future<User> logIn() async {
   //   var url = Uri.https(_baseUrl, '/records', {'q': '{http}'});
