@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
         routes: {
           'home': (_) => HomeScreen(),
           'new-record': (_) => NewRecordScreen(),
+          'new-alarm': (_) => NewAlarmScreen(),
           'login': (_) => LoginScreen(),
           'register': (_) => RegisterScreen()
         },

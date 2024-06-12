@@ -22,8 +22,10 @@ class AlertsScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                TextButton(onPressed: null, child: Text('Nuevo')),
-                TextButton(onPressed: null, child: Text('Agendar')),
+                TextButton(
+                    onPressed: () => Navigator.pushNamed(context, 'new-alarm',
+                        arguments: 'data-instance'),
+                    child: Text('Nuevo')),
                 TextButton(onPressed: null, child: Text('...')),
               ],
             ),
