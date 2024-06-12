@@ -91,32 +91,12 @@ class NewRecordScreen extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.all(10),
-            width: double.infinity,
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextButton(
-                    onPressed: null,
-                    child: Text('Cancelar'),
-                  ),
-                ),
-                Expanded(
-                  child: TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.black26)),
-                    onPressed: () => {recordsProvider.createRecord(newRecord)},
-                    child: Text(
-                      'Guardar',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          )
+          SaveCanceltToolbarWidget(
+              onPressedCallback: () => {
+                    recordsProvider.createRecordSample()
+                    // recordsProvider.createRecord(newRecord)
+                  },
+              onCancelCallback: () => {Navigator.pop(context)})
         ]),
       ),
     );
