@@ -1,3 +1,4 @@
+export 'package:heart/screens/new_alarm.dart';
 export 'package:heart/screens/login.dart';
 export 'package:heart/screens/register.dart';
 export 'package:heart/screens/new_record.dart';
