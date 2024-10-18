@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:heart/models/models.dart';
+import 'package:heart/providers/providers.dart';
 import 'package:heart/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class NewAlarmScreen extends StatefulWidget {
   const NewAlarmScreen({super.key});
@@ -27,6 +30,9 @@ class _NewAlarmScreenState extends State<NewAlarmScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final alarmsProvider = Provider.of<AlarmsProvider>(context);
+    Alarm newAlarm = Alarm();
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black26),
@@ -61,7 +67,10 @@ class _NewAlarmScreenState extends State<NewAlarmScreen> {
               },
             ),
             SaveCanceltToolbarWidget(
-                onPressedCallback: () => {},
+                onPressedCallback: () => {
+                      alarmsProvider.createAlarmSample()
+                      // alarmsProvider.createAlarm(newAlarm);
+                    },
                 onCancelCallback: () => {Navigator.pop(context)})
           ],
         ),

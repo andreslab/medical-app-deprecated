@@ -8,7 +8,7 @@ import 'package:sqflite/sqflite.dart';
 class AlarmsProvider extends ChangeNotifier {
   final AlarmsApi _alarmsApi = AlarmsApi();
   final tableName = 'alarms';
-  final AuthProvider? _authProvider;
+  final AuthProvider _authProvider;
   List<Alarm> _alarms = [];
   String _errorMessage = '';
   bool _isLoading = true;
@@ -17,13 +17,11 @@ class AlarmsProvider extends ChangeNotifier {
   String get errorMessage => _errorMessage;
   bool get isLoading => _isLoading;
 
-  AlarmsProvider([this._authProvider]) {
-    if (_authProvider != null && _authProvider!.loggedIn) {
+  AlarmsProvider(this._authProvider) {
+    if (_authProvider.isSignedIn) {
       getAlarms();
     } else {
-      if (Storage.db != null) {
-        getAlarmsFromDB();
-      }
+      getAlarmsFromDB();
     }
   }
 
@@ -50,7 +48,7 @@ class AlarmsProvider extends ChangeNotifier {
   }
 
   createAlarm(Alarm alarm) async {
-    if (_authProvider!.loggedIn) {
+    if (_authProvider.isSignedIn) {
       //TODO: send to endpoint
     } else {
       await Storage.db.insert(
@@ -61,8 +59,14 @@ class AlarmsProvider extends ChangeNotifier {
     }
   }
 
+  createAlarmSample() async {
+    await Storage.sampleNewAlarm();
+    await getAlarmsFromDB();
+    notifyListeners();
+  }
+
   updateAlarm(Alarm alarm) async {
-    if (_authProvider!.loggedIn) {
+    if (_authProvider.isSignedIn) {
       //TODO: send to endpoint
     } else {
       await Storage.db.update(tableName, alarm.toMap(),
@@ -71,7 +75,7 @@ class AlarmsProvider extends ChangeNotifier {
   }
 
   deleteRecord(int id) async {
-    if (_authProvider!.loggedIn) {
+    if (_authProvider.isSignedIn) {
       //TODO: send to endpoint
     } else {
       await Storage.db.delete(tableName, where: 'id = ?', whereArgs: [id]);

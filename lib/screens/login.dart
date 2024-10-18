@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               TextButton(
                   onPressed: () async {
-                    authProvider.login();
+                    authProvider.signIn();
                   },
                   child: Text('login'))
             ],

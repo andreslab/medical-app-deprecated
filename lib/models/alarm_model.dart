@@ -1,24 +1,26 @@
 class Alarm {
-  final int id;
-  final String title;
-  final String time;
-  final String body;
-  final DateTime createdAt;
+  int? id;
+  String? title;
+  String? time;
+  String? body;
+  DateTime createdAt;
 
-  Alarm(
-      {required this.id,
-      required this.title,
-      required this.time,
-      required this.body,
-      required this.createdAt});
+  Alarm({
+    this.id,
+    this.title,
+    this.time,
+    this.body,
+    DateTime? createdAt_,
+  }) : createdAt = createdAt_ ?? DateTime.now();
 
   factory Alarm.fromJson(Map<String, dynamic> json) {
     return Alarm(
-        id: json['id'],
-        title: json['title'],
-        time: json['time'],
-        body: json['body'],
-        createdAt: DateTime.parse(json['created_at'] as String));
+      id: json['id'],
+      title: json['title'],
+      time: json['time'],
+      body: json['body'],
+      createdAt_: DateTime.parse(json['created_at'] as String),
+    );
   }
 
   Map<String, dynamic> toMap() {

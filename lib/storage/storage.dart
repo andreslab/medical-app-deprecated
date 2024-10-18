@@ -42,7 +42,7 @@ class Storage {
     await db.close();
   }
 
-  static Future<void> someDatabaseOperation() async {
+  static Future<void> sampleNewRecord() async {
     await db.insert('records', {
       'created_at': DateTime.now().toString(),
       'diastolic': 80,
@@ -50,6 +50,9 @@ class Storage {
       'bpm': 70,
       'client_id': 'me',
     });
+  }
+
+  static Future<void> sampleNewAlarm() async {
     await db.insert('alarms', {
       'created_at': DateTime.now().toString(),
       'title': 'Title alarm',

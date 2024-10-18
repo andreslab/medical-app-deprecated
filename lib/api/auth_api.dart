@@ -8,7 +8,9 @@ class AuthApi {
 
   AuthApi();
 
-  Future<void> login() async {}
+  Future<void> signIn() async {}
+
+  Future<void> signOut() async {}
 
   Future<void> register() async {}
 

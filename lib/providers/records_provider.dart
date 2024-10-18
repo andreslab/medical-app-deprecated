@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:heart/api/api.dart';
-import 'package:heart/api/device_api.dart';
 import 'package:heart/models/models.dart';
 import 'package:heart/providers/providers.dart';
 import 'package:heart/storage/storage.dart';
@@ -8,9 +7,8 @@ import 'package:sqflite/sqflite.dart';
 
 class RecordsProvider extends ChangeNotifier {
   final RecordsApi _recordsApi = RecordsApi();
-  final DeviceApi _deviceApi = DeviceApi();
   final tableName = 'records';
-  final AuthProvider? _authProvider;
+  final AuthProvider _authProvider;
   List<Record> _records = [];
   String _errorMessage = '';
   bool _isLoading = true;
@@ -19,11 +17,10 @@ class RecordsProvider extends ChangeNotifier {
   String get errorMessage => _errorMessage;
   bool get isLoading => _isLoading;
 
-  RecordsProvider([this._authProvider]) {
-    if (_authProvider != null && _authProvider!.loggedIn) {
+  RecordsProvider(this._authProvider) {
+    if (_authProvider.isSignedIn) {
       getRecords();
     } else {
-      _deviceApi.registerDeviceId();
       getRecordsFromDB();
     }
   }
@@ -51,13 +48,13 @@ class RecordsProvider extends ChangeNotifier {
   }
 
   createRecordSample() async {
-    await Storage.someDatabaseOperation();
+    await Storage.sampleNewRecord();
     await getRecordsFromDB();
     notifyListeners();
   }
 
   createRecord(Record record) async {
-    if (_authProvider!.loggedIn) {
+    if (_authProvider.isSignedIn) {
       //TODO: send to endpoint
     } else {
       await Storage.db.insert(
@@ -70,7 +67,7 @@ class RecordsProvider extends ChangeNotifier {
   }
 
   updateRecord(Record record) async {
-    if (_authProvider!.loggedIn) {
+    if (_authProvider.isSignedIn) {
       //TODO: send to endpoint
     } else {
       await Storage.db.update(tableName, record.toMap(),
@@ -79,7 +76,7 @@ class RecordsProvider extends ChangeNotifier {
   }
 
   deleteRecord(int id) async {
-    if (_authProvider!.loggedIn) {
+    if (_authProvider.isSignedIn) {
       //TODO: send to endpoint
     } else {
       await Storage.db.delete(tableName, where: 'id = ?', whereArgs: [id]);
