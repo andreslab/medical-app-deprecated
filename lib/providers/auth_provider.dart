@@ -15,9 +15,9 @@ class AuthProvider extends ChangeNotifier {
 
   // AuthProvider() {}
 
-  signIn() async {
+  signIn(String email, String password) async {
     try {
-      await _authApi.signIn();
+      await _authApi.signIn(email, password);
       _isSignedIn = true;
       notifyListeners();
     } catch (e) {}
@@ -30,9 +30,9 @@ class AuthProvider extends ChangeNotifier {
     } catch (e) {}
   }
 
-  register() async {
+  signUp(String email, String password) async {
     try {
-      await _authApi.register();
+      await _authApi.singUp(email, password);
     } catch (e) {}
   }
 }

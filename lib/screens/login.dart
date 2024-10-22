@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:heart/providers/providers.dart';
 import 'package:heart/widgets/widgets.dart';
@@ -65,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               TextButton(
                   onPressed: () async {
-                    authProvider.signIn();
+                    authProvider.signIn(_email.text, _password.text);
                   },
                   child: Text('login'))
             ],

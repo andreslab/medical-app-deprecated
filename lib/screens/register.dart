@@ -78,7 +78,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               TextButton(
                   onPressed: () async {
-                    authProvider.register();
+                    authProvider.signUp(_email.text, _password.text);
                   },
                   child: Text('Register'))
             ],

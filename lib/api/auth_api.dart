@@ -1,28 +1,27 @@
-import 'dart:convert' as convert;
-import 'package:http/http.dart' as http;
-import 'package:heart/models/models.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthApi {
-  final String _baseUrl = 'localhost.com';
+  late final SupabaseClient supabase = Supabase.instance.client;
+
+  Session? get session => supabase.auth.currentSession;
+
+  User? get user => supabase.auth.currentUser;
 
   AuthApi();
 
-  Future<void> signIn() async {}
+  Future<void> signIn(String email, String password) async {
+    await supabase.auth.signInWithPassword(email: email, password: password);
+  }
 
-  Future<void> signOut() async {}
+  Future<void> signOut() async {
+    await supabase.auth.signOut();
+  }
 
-  Future<void> register() async {}
-
-  // Future<User> logIn() async {
-  //   var url = Uri.https(_baseUrl, '/records', {'q': '{http}'});
-
-  //   var response = await http.get(url);
-  //   if (response.statusCode == 200) {
-  //     var jsonResponse = convert.jsonDecode(response.body) as User;
-  //     return jsonResponse;
-  //   } else {
-  //     throw Exception('Failed to load record data');
-  //   }
-  // }
+  Future<void> singUp(String email, String password) async {
+    await supabase.auth.signUp(
+      email: email,
+      password: password,
+    );
+    await supabase.from('test').select('*');
+  }
 }
